@@ -3,10 +3,6 @@ export type TimezoneOption = {
   label: string; // Human-readable label, e.g., "Los Angeles"
 };
 
-export type SelectedTimezone = {
-  id: string;
-};
-
 export type CustomLabels = {
   [timezoneId: string]: string;
 };

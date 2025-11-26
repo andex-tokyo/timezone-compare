@@ -9,13 +9,6 @@ export function getLocalTimezone(): string {
 }
 
 /**
- * Convert a local Date to UTC DateTime
- */
-export function localDateToUtc(date: Date): DateTime {
-  return DateTime.fromJSDate(date).toUTC();
-}
-
-/**
  * Convert UTC DateTime to a specific timezone
  */
 export function utcToTimezone(
@@ -72,20 +65,6 @@ export function getUtcOffsetString(
   const hoursStr = hours.toString().padStart(2, "0");
   const minutesStr = minutes.toString().padStart(2, "0");
   return `UTC${sign}${hoursStr}:${minutesStr}`;
-}
-
-/**
- * Get the hour of the day (0-23) for a DateTime
- */
-export function getHour(dt: DateTime): number {
-  return dt.hour;
-}
-
-/**
- * Add minutes to a DateTime
- */
-export function addMinutes(dt: DateTime, minutes: number): DateTime {
-  return dt.plus({ minutes });
 }
 
 /**
