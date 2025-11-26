@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { TIMEZONE_OPTIONS } from '../utils/timeUtils';
+import { useState, useMemo } from "react";
+import { TIMEZONE_OPTIONS } from "../utils/timeUtils";
 
 type Props = {
   selectedTimezones: string[];
@@ -7,25 +7,29 @@ type Props = {
 };
 
 export function TimezonePicker({ selectedTimezones, onAddTimezone }: Props) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const filteredOptions = useMemo(() => {
-    const query = searchQuery.toLowerCase().trim();
+    const query = searchQuery.toLowerCase().trim().replace(/\s+/g, "");
     if (!query) {
-      return TIMEZONE_OPTIONS.filter((opt) => !selectedTimezones.includes(opt.id));
+      return TIMEZONE_OPTIONS.filter(
+        (opt) => !selectedTimezones.includes(opt.id),
+      );
     }
-    return TIMEZONE_OPTIONS.filter(
-      (opt) =>
-        !selectedTimezones.includes(opt.id) &&
-        (opt.id.toLowerCase().includes(query) ||
-          opt.label.toLowerCase().includes(query))
-    );
+    return TIMEZONE_OPTIONS.filter((opt) => {
+      if (selectedTimezones.includes(opt.id)) return false;
+      const idNormalized = opt.id.toLowerCase().replace(/[\s_\-/]/g, "");
+      const labelNormalized = opt.label.toLowerCase().replace(/\s+/g, "");
+      return (
+        idNormalized.startsWith(query) || labelNormalized.startsWith(query)
+      );
+    });
   }, [searchQuery, selectedTimezones]);
 
   const handleSelect = (id: string) => {
     onAddTimezone(id);
-    setSearchQuery('');
+    setSearchQuery("");
     setIsOpen(false);
   };
 
