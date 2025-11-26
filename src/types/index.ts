@@ -14,5 +14,4 @@ export type CustomLabels = {
 export type StorageData = {
   selectedTimezones: string[];
   customLabels?: CustomLabels;
-  lastBaseTime?: string; // ISO string
 };

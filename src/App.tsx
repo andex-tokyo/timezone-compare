@@ -11,16 +11,9 @@ import "./App.css";
 function App() {
   const localTimezone = useMemo(() => getLocalTimezone(), []);
 
-  const [baseTimeUtc, setBaseTimeUtc] = useState<DateTime>(() => {
-    const stored = loadFromStorage();
-    if (stored.lastBaseTime) {
-      const dt = DateTime.fromISO(stored.lastBaseTime, { zone: "utc" });
-      if (dt.isValid) {
-        return dt;
-      }
-    }
-    return DateTime.utc();
-  });
+  const [baseTimeUtc, setBaseTimeUtc] = useState<DateTime>(() =>
+    DateTime.utc(),
+  );
 
   const [timezones, setTimezones] = useState<string[]>(() => {
     const stored = loadFromStorage();
@@ -40,9 +33,8 @@ function App() {
     saveToStorage({
       selectedTimezones: timezones,
       customLabels,
-      lastBaseTime: baseTimeUtc.toISO() ?? undefined,
     });
-  }, [timezones, customLabels, baseTimeUtc]);
+  }, [timezones, customLabels]);
 
   const handleAddTimezone = useCallback((id: string) => {
     setTimezones((prev) => {

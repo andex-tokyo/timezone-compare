@@ -20,7 +20,6 @@ export function loadFromStorage(): StorageData {
         return {
           selectedTimezones: parsed.selectedTimezones,
           customLabels: parsed.customLabels ?? {},
-          lastBaseTime: parsed.lastBaseTime,
         };
       }
     }
