@@ -82,54 +82,34 @@ export function isNight(hour: number): boolean {
 }
 
 /**
- * Major IANA timezones for selection
+ * Convert timezone ID to human-readable label
+ * e.g., "America/New_York" -> "New York"
+ * e.g., "America/Argentina/Buenos_Aires" -> "Buenos Aires"
  */
-export const TIMEZONE_OPTIONS: TimezoneOption[] = [
-  { id: "UTC", label: "UTC" },
-  // Americas
-  { id: "America/Los_Angeles", label: "Los Angeles (Pacific)" },
-  { id: "America/Denver", label: "Denver (Mountain)" },
-  { id: "America/Chicago", label: "Chicago (Central)" },
-  { id: "America/New_York", label: "New York (Eastern)" },
-  { id: "America/Toronto", label: "Toronto" },
-  { id: "America/Vancouver", label: "Vancouver" },
-  { id: "America/Mexico_City", label: "Mexico City" },
-  { id: "America/Sao_Paulo", label: "Sao Paulo" },
-  { id: "America/Buenos_Aires", label: "Buenos Aires" },
-  // Europe
-  { id: "Europe/London", label: "London" },
-  { id: "Europe/Paris", label: "Paris" },
-  { id: "Europe/Berlin", label: "Berlin" },
-  { id: "Europe/Amsterdam", label: "Amsterdam" },
-  { id: "Europe/Madrid", label: "Madrid" },
-  { id: "Europe/Rome", label: "Rome" },
-  { id: "Europe/Zurich", label: "Zurich" },
-  { id: "Europe/Moscow", label: "Moscow" },
-  { id: "Europe/Stockholm", label: "Stockholm" },
-  { id: "Europe/Warsaw", label: "Warsaw" },
-  // Asia
-  { id: "Asia/Tokyo", label: "Tokyo" },
-  { id: "Asia/Seoul", label: "Seoul" },
-  { id: "Asia/Shanghai", label: "Shanghai" },
-  { id: "Asia/Hong_Kong", label: "Hong Kong" },
-  { id: "Asia/Taipei", label: "Taipei" },
-  { id: "Asia/Singapore", label: "Singapore" },
-  { id: "Asia/Bangkok", label: "Bangkok" },
-  { id: "Asia/Jakarta", label: "Jakarta" },
-  { id: "Asia/Kolkata", label: "Kolkata (India)" },
-  { id: "Asia/Dubai", label: "Dubai" },
-  { id: "Asia/Tel_Aviv", label: "Tel Aviv" },
-  // Oceania
-  { id: "Australia/Sydney", label: "Sydney" },
-  { id: "Australia/Melbourne", label: "Melbourne" },
-  { id: "Australia/Perth", label: "Perth" },
-  { id: "Pacific/Auckland", label: "Auckland" },
-  { id: "Pacific/Honolulu", label: "Honolulu" },
-  // Africa
-  { id: "Africa/Cairo", label: "Cairo" },
-  { id: "Africa/Johannesburg", label: "Johannesburg" },
-  { id: "Africa/Lagos", label: "Lagos" },
-];
+function formatTimezoneLabel(id: string): string {
+  const parts = id.split("/");
+  const city = parts[parts.length - 1];
+  return city.replace(/_/g, " ");
+}
+
+/**
+ * Get all IANA timezones from the browser
+ */
+function getAllTimezones(): TimezoneOption[] {
+  const timezones = Intl.supportedValuesOf("timeZone");
+  return [
+    { id: "UTC", label: "UTC" },
+    ...timezones.map((id) => ({
+      id,
+      label: formatTimezoneLabel(id),
+    })),
+  ];
+}
+
+/**
+ * All IANA timezones for selection
+ */
+export const TIMEZONE_OPTIONS: TimezoneOption[] = getAllTimezones();
 
 /**
  * Get label for a timezone ID
