@@ -132,11 +132,16 @@ export function Timeline({
     isDraggingTime.current = false;
   }, []);
 
+  const touchStartY = useRef(0);
+  const isHorizontalSwipe = useRef(false);
+
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       if (e.touches.length !== 1) return;
       isDraggingTime.current = true;
+      isHorizontalSwipe.current = false;
       dragStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
       dragStartTime.current = baseTimeUtc;
     },
     [baseTimeUtc],
@@ -147,6 +152,24 @@ export function Timeline({
       if (!isDraggingTime.current || e.touches.length !== 1) return;
 
       const deltaX = e.touches[0].clientX - dragStartX.current;
+      const deltaY = e.touches[0].clientY - touchStartY.current;
+
+      // Determine swipe direction on first significant movement
+      if (
+        !isHorizontalSwipe.current &&
+        (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)
+      ) {
+        isHorizontalSwipe.current = Math.abs(deltaX) > Math.abs(deltaY);
+      }
+
+      // Only handle horizontal swipes for timeline
+      if (!isHorizontalSwipe.current) {
+        return;
+      }
+
+      // Prevent vertical scroll when swiping horizontally
+      e.preventDefault();
+
       const minutesPerPixel = getMinutesPerPixel();
       const deltaMinutes = -deltaX * minutesPerPixel;
 
@@ -159,12 +182,13 @@ export function Timeline({
 
   const handleTouchEnd = useCallback(() => {
     isDraggingTime.current = false;
+    isHorizontalSwipe.current = false;
   }, []);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
@@ -228,10 +252,6 @@ export function Timeline({
   return (
     <div className="timeline-wrapper">
       <div className="timeline-container" ref={containerRef}>
-        <div className="center-line-handle mobile-handle">
-          <div className="handle-time">{formatTimeFull(localBaseTime)}</div>
-          <div className="handle-label">Your local time</div>
-        </div>
         <div className="timezone-rows">
           {timezones.map((tz, index) => (
             <div
