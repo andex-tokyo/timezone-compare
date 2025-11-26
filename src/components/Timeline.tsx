@@ -228,6 +228,10 @@ export function Timeline({
   return (
     <div className="timeline-wrapper">
       <div className="timeline-container" ref={containerRef}>
+        <div className="center-line-handle mobile-handle">
+          <div className="handle-time">{formatTimeFull(localBaseTime)}</div>
+          <div className="handle-label">Your local time</div>
+        </div>
         <div className="timezone-rows">
           {timezones.map((tz, index) => (
             <div

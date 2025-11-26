@@ -271,6 +271,11 @@ body {
     margin-top: 0.125rem;
 }
 
+/* Mobile handle - hidden on desktop */
+.mobile-handle {
+    display: none;
+}
+
 /* Timezone Rows */
 .timezone-rows {
     padding: 3.5rem 0 0.5rem 0;
@@ -550,6 +555,18 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .app-header {
+        padding: 1rem;
+    }
+
+    .app-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .app-subtitle {
+        font-size: 0.8rem;
+    }
+
     .controls-section {
         flex-direction: column;
         align-items: stretch;
@@ -567,26 +584,159 @@ body {
     }
 
     .main-content {
-        padding: 1rem;
+        padding: 0.75rem;
     }
 
+    /* Timeline container adjustments */
+    .timeline-container {
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .timezone-rows {
+        padding: 0;
+    }
+
+    /* Hide the overlay on mobile - disable dragging */
     .timeline-overlay {
-        left: 0;
-        right: 0;
+        display: none;
     }
 
+    /* Center line adjustments for mobile */
+    .center-line {
+        display: none;
+    }
+
+    /* Show mobile handle */
+    .mobile-handle {
+        display: block;
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        border-radius: 6px 6px 0 0;
+        min-width: auto;
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    /* Mobile timezone row - stack vertically */
     .timezone-row {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 0.5rem;
+        padding: 0.75rem;
+        position: relative;
+    }
+
+    /* Mobile row header with checkbox, info, time, and remove button */
+    .timezone-row > .timezone-checkbox {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+    }
+
+    .timezone-row > .timezone-actions {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
     }
 
     .timezone-info {
-        flex-wrap: wrap;
-        padding-right: 0;
+        flex-wrap: nowrap;
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
 
     .drag-handle {
         display: none;
+    }
+
+    .timezone-details {
+        min-width: 0;
+    }
+
+    .timezone-label {
+        font-size: 0.875rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .timezone-id {
+        font-size: 0.625rem;
+    }
+
+    .timezone-offset {
+        font-size: 0.625rem;
+    }
+
+    .timezone-time {
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 700;
+        padding: 0.25rem 0;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .timezone-timeline {
+        height: 28px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .hour-label {
+        font-size: 0.5rem;
+    }
+
+    .hour-cell {
+        min-width: 0;
+    }
+
+    /* Copy section */
+    .copy-section {
+        padding: 0.75rem;
+    }
+
+    .copy-btn {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    /* Footer */
+    .app-footer {
+        padding: 1rem;
+    }
+
+    .app-footer p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 400px) {
+    .main-content {
+        padding: 0.5rem;
+    }
+
+    .timezone-row {
+        padding: 0.5rem;
+    }
+
+    .timezone-info {
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
+    }
+
+    .timezone-label {
+        font-size: 0.8125rem;
+    }
+
+    .timezone-time {
+        font-size: 1.125rem;
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
     }
 
     .timezone-timeline {
@@ -594,20 +744,11 @@ body {
     }
 
     .hour-label {
+        font-size: 0.4375rem;
+    }
+
+    .local-badge {
         font-size: 0.5rem;
-    }
-
-    .timezone-time {
-        text-align: left;
-        font-size: 0.875rem;
-    }
-
-    .center-line-handle {
-        min-width: 140px;
-        padding: 0.375rem 0.75rem;
-    }
-
-    .handle-time {
-        font-size: 0.8125rem;
+        padding: 0.0625rem 0.25rem;
     }
 }
