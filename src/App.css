@@ -1,0 +1,613 @@
+/* Reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+        Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.5;
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.app-header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.app-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Controls Section */
+.controls-section {
+    background: white;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Base Time Controls */
+.base-time-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.local-timezone-info {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.local-timezone-info .label {
+    margin-right: 0.5rem;
+}
+
+.local-timezone-info .value {
+    font-weight: 500;
+    color: #334155;
+}
+
+.base-time-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.base-time-input label {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.base-time-input input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #334155;
+}
+
+.base-time-input input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.reset-btn {
+    padding: 0.5rem 1rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.reset-btn:hover {
+    background: #5a67d8;
+}
+
+/* Timezone Picker */
+.timezone-picker {
+    position: relative;
+    min-width: 280px;
+}
+
+.picker-input-container {
+    position: relative;
+}
+
+.picker-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #334155;
+}
+
+.picker-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.picker-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    margin-top: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.picker-option {
+    padding: 0.625rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.picker-option:last-child {
+    border-bottom: none;
+}
+
+.picker-option:hover {
+    background: #f8fafc;
+}
+
+.option-label {
+    font-weight: 500;
+    color: #334155;
+}
+
+.option-id {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.picker-more,
+.picker-no-results {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    color: #94a3b8;
+    text-align: center;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 1.5rem 2rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #64748b;
+}
+
+/* Timeline Container */
+.timeline-container {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Timeline Wrapper */
+.timeline-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Timeline Overlay - the draggable area */
+/* Must align with .timezone-timeline column:
+   left = padding(1rem) + checkbox(24px) + gap(0.75rem) + info(160px) + gap(0.75rem) + time(90px) + gap(0.75rem)
+   right = padding(1rem) + actions(30px) + gap(0.75rem) */
+.timeline-overlay {
+    position: absolute;
+    top: 0;
+    left: calc(1rem + 24px + 0.75rem + 160px + 0.75rem + 90px + 0.75rem);
+    right: calc(1rem + 30px + 0.75rem);
+    bottom: 0;
+    cursor: ew-resize;
+    z-index: 15;
+}
+
+/* Center Line */
+.center-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    transform: translateX(-50%);
+    z-index: 20;
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.4);
+}
+
+.center-line-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 8px 8px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    min-width: 160px;
+    text-align: center;
+}
+
+.handle-time {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: "Menlo", "Monaco", "Courier New", monospace;
+}
+
+.handle-label {
+    font-size: 0.6875rem;
+    opacity: 0.85;
+    margin-top: 0.125rem;
+}
+
+/* Timezone Rows */
+.timezone-rows {
+    padding: 3.5rem 0 0.5rem 0;
+}
+
+/* Timezone Row Wrapper for drag-and-drop */
+.timezone-row-wrapper {
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.timezone-row-wrapper.dragging {
+    opacity: 0.5;
+}
+
+.timezone-row-wrapper.drag-over {
+    border-top: 2px solid #667eea;
+}
+
+.timezone-row-wrapper[draggable="true"] {
+    cursor: grab;
+}
+
+.timezone-row-wrapper[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.timezone-row {
+    display: grid;
+    grid-template-columns: 24px 160px 90px 1fr 30px;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 0.75rem;
+}
+
+.timezone-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timezone-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.timezone-row:last-child {
+    border-bottom: none;
+}
+
+.timezone-row:hover {
+    background: #f8fafc;
+}
+
+.timezone-row.local {
+    background: #f0f4ff;
+}
+
+.timezone-row.local:hover {
+    background: #e8edff;
+}
+
+/* Timezone Info */
+.timezone-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.drag-handle {
+    width: 20px;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    letter-spacing: -2px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.timezone-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.timezone-label {
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.9375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.timezone-label:hover .edit-icon {
+    opacity: 1;
+}
+
+.edit-icon {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.label-edit-input {
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.9375rem;
+    border: 1px solid #667eea;
+    border-radius: 4px;
+    padding: 0.125rem 0.375rem;
+    width: 100%;
+    max-width: 140px;
+}
+
+.label-edit-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.local-badge {
+    font-size: 0.625rem;
+    font-weight: 500;
+    background: #667eea;
+    color: white;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.timezone-id {
+    font-size: 0.6875rem;
+    color: #94a3b8;
+    line-height: 1.3;
+}
+
+.timezone-offset {
+    font-size: 0.6875rem;
+    color: #64748b;
+    font-family: "Menlo", "Monaco", "Courier New", monospace;
+    line-height: 1.3;
+}
+
+.timezone-time {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #334155;
+    font-family: "Menlo", "Monaco", "Courier New", monospace;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.timezone-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.remove-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* Timezone Timeline */
+.timezone-timeline {
+    position: relative;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.hour-bar {
+    display: flex;
+    height: 100%;
+    width: calc(100% * 25 / 24);
+}
+
+.hour-cell {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e2e8f0;
+    border-right: 1px solid #cbd5e1;
+}
+
+.hour-cell:last-child {
+    border-right: none;
+}
+
+.hour-cell.work {
+    background: #d1fae5;
+}
+
+.hour-cell.night {
+    background: #334155;
+}
+
+.hour-cell.night .hour-label {
+    color: #94a3b8;
+}
+
+.hour-label {
+    font-size: 0.625rem;
+    color: #64748b;
+    font-family: "Menlo", "Monaco", "Courier New", monospace;
+}
+
+/* Copy Section */
+.copy-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.copy-btn {
+    padding: 0.5rem 1rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copy-btn:hover {
+    background: #059669;
+}
+
+.copy-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.app-footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.app-footer p {
+    font-size: 0.8125rem;
+    color: #64748b;
+}
+
+.app-footer a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.app-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .base-time-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .timezone-picker {
+        min-width: unset;
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .timeline-overlay {
+        left: 0;
+        right: 0;
+    }
+
+    .timezone-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .timezone-info {
+        flex-wrap: wrap;
+        padding-right: 0;
+    }
+
+    .drag-handle {
+        display: none;
+    }
+
+    .timezone-timeline {
+        height: 24px;
+    }
+
+    .hour-label {
+        font-size: 0.5rem;
+    }
+
+    .timezone-time {
+        text-align: left;
+        font-size: 0.875rem;
+    }
+
+    .center-line-handle {
+        min-width: 140px;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .handle-time {
+        font-size: 0.8125rem;
+    }
+}
